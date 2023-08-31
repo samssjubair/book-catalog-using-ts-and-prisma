@@ -9,6 +9,11 @@
             "date": 1693498876785,
             "name": "/Users/samssjubair/Documents/PH level-2/assignment-8/university-management-core-service-starter/logs/winston/successes/phu-2023-31-08-22-success.log",
             "hash": "32417a432e615a38bb75148148f67dde38d1cac2ac1fd92bcb9734491da211b1"
+        },
+        {
+            "date": 1693505389316,
+            "name": "/Users/samssjubair/Documents/PH level-2/assignment-8/university-management-core-service-starter/logs/winston/successes/phu-2023-01-09-00-success.log",
+            "hash": "0b16586389b8268c98c299f991be2c5e0cc9c6f76e4209b9f48d669f235dfb90"
         }
     ],
     "hashType": "sha256"
