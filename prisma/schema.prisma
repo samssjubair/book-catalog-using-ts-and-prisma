@@ -47,9 +47,8 @@ model Book {
   title           String
   author          String
   price           Float
-  image           String
   genre           String
-  publicationDate DateTime
+  publicationDate String
 
   categoryId String
   category   Category @relation(fields: [categoryId], references: [id])

@@ -1,19 +1,22 @@
-import { Category, Prisma } from '@prisma/client';
+import { Book, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
 import { IPaginationOptions } from '../../../interfaces/pagination';
 
 import prisma from '../../../shared/prisma';
 import {
-    studentRelationalFields,
-    studentRelationalFieldsMapper,
-    studentSearchableFields,
-} from './category.constants';
-import { IStudentFilterRequest } from './category.interface';
+  studentRelationalFields,
+  studentRelationalFieldsMapper,
+  studentSearchableFields,
+} from './book.constants';
+import { IStudentFilterRequest } from './book.interface';
 
-const insertIntoDB = async (data: Category): Promise<Category> => {
-  const result = await prisma.category.create({
+const insertIntoDB = async (data: Book): Promise<Book> => {
+  const result = await prisma.book.create({
     data,
+    include:{
+      category:true,
+    }
   });
   return result;
 };
@@ -21,7 +24,7 @@ const insertIntoDB = async (data: Category): Promise<Category> => {
 const getAllFromDB = async (
   filters: IStudentFilterRequest,
   options: IPaginationOptions
-): Promise<IGenericResponse<Category[]>> => {
+): Promise<IGenericResponse<Book[]>> => {
   const { limit, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
@@ -61,7 +64,7 @@ const getAllFromDB = async (
   const whereConditions: Prisma.UserWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
-  const result = await prisma.category.findMany({
+  const result = await prisma.book.findMany({
     where: whereConditions,
     skip,
     take: limit,
@@ -72,7 +75,7 @@ const getAllFromDB = async (
             createdAt: 'desc',
           },
   });
-  const total = await prisma.category.count({
+  const total = await prisma.book.count({
     where: whereConditions,
   });
 
@@ -86,8 +89,8 @@ const getAllFromDB = async (
   };
 };
 
-const getByIdFromDB = async (id: string): Promise<Category | null> => {
-  const result = await prisma.category.findUnique({
+const getByIdFromDB = async (id: string): Promise<Book | null> => {
+  const result = await prisma.book.findUnique({
     where: {
       id,
     },
@@ -97,9 +100,9 @@ const getByIdFromDB = async (id: string): Promise<Category | null> => {
 
 const updateById = async (
   id: string,
-  payload: Partial<Category>
-): Promise<Category> => {
-  const result = await prisma.category.update({
+  payload: Partial<Book>
+): Promise<Book> => {
+  const result = await prisma.book.update({
     where: {
       id,
     },
@@ -108,8 +111,8 @@ const updateById = async (
   return result;
 };
 
-const deleteFromDB = async (id: string): Promise<Category> => {
-  const result = await prisma.category.delete({
+const deleteFromDB = async (id: string): Promise<Book> => {
+  const result = await prisma.book.delete({
     where: {
       id,
     },
@@ -117,7 +120,7 @@ const deleteFromDB = async (id: string): Promise<Category> => {
   return result;
 };
 
-export const CategoryService = {
+export const BookService = {
   insertIntoDB,
   getAllFromDB,
   getByIdFromDB,
