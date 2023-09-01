@@ -5,27 +5,27 @@ import { IPaginationOptions } from '../../../interfaces/pagination';
 
 import prisma from '../../../shared/prisma';
 import {
-  studentRelationalFields,
-  studentRelationalFieldsMapper,
-  studentSearchableFields,
+  bookRelationalFields,
+  bookRelationalFieldsMapper,
+  studentSearchableFields
 } from './book.constants';
-import { IStudentFilterRequest } from './book.interface';
+import { IBookFilterRequest } from './book.interface';
 
 const insertIntoDB = async (data: Book): Promise<Book> => {
   const result = await prisma.book.create({
     data,
-    include:{
-      category:true,
-    }
+    include: {
+      category: true,
+    },
   });
   return result;
 };
 
 const getAllFromDB = async (
-  filters: IStudentFilterRequest,
+  filters: IBookFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Book[]>> => {
-  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
   const andConditions = [];
@@ -44,13 +44,14 @@ const getAllFromDB = async (
   if (Object.keys(filterData).length > 0) {
     andConditions.push({
       AND: Object.keys(filterData).map(key => {
-        if (studentRelationalFields.includes(key)) {
+        if (bookRelationalFields.includes(key)) {
           return {
-            [studentRelationalFieldsMapper[key]]: {
+            [bookRelationalFieldsMapper[key]]: {
               id: (filterData as any)[key],
             },
           };
-        } else {
+        }
+        else {
           return {
             [key]: {
               equals: (filterData as any)[key],
@@ -61,13 +62,23 @@ const getAllFromDB = async (
     });
   }
 
-  const whereConditions: Prisma.UserWhereInput =
+  // if(filterData.category) {
+  //   andConditions.push({
+  //     categoryId: {
+  //       id: filterData.category,
+  //     },
+  //   });
+  // }
+
+  
+
+  const whereConditions: Prisma.BookWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   const result = await prisma.book.findMany({
     where: whereConditions,
     skip,
-    take: limit,
+    take: size,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
@@ -83,7 +94,8 @@ const getAllFromDB = async (
     meta: {
       total,
       page,
-      limit,
+      size,
+      totalPage: Math.ceil(total / size),
     },
     data: result,
   };
