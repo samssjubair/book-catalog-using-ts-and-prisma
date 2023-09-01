@@ -22,7 +22,7 @@ const getAllFromDB = async (
   filters: IStudentFilterRequest,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Category[]>> => {
-  const { limit, page, skip } = paginationHelpers.calculatePagination(options);
+  const { size, page, skip } = paginationHelpers.calculatePagination(options);
   const { searchTerm, ...filterData } = filters;
 
   const andConditions = [];
@@ -58,13 +58,13 @@ const getAllFromDB = async (
     });
   }
 
-  const whereConditions: Prisma.UserWhereInput =
+  const whereConditions: Prisma.CategoryWhereInput =
     andConditions.length > 0 ? { AND: andConditions } : {};
 
   const result = await prisma.category.findMany({
     where: whereConditions,
     skip,
-    take: limit,
+    take: size,
     orderBy:
       options.sortBy && options.sortOrder
         ? { [options.sortBy]: options.sortOrder }
@@ -80,7 +80,7 @@ const getAllFromDB = async (
     meta: {
       total,
       page,
-      limit,
+      size,
     },
     data: result,
   };
