@@ -13,12 +13,7 @@ router.get(
 
 router.get('/:id', UserController.getByIdFromDB);
 
-router.post(
-  '/',
-  // auth(ENUM_USER_ROLE.ADMIN, ENUM_USER_ROLE.STUDENT),
-  validateRequest(UserValidation.create),
-  UserController.insertIntoDB
-);
+
 
 router.patch(
   '/:id',
