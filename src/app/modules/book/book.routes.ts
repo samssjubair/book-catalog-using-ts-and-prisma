@@ -1,4 +1,6 @@
 import express from 'express';
+import { ENUM_USER_ROLE } from '../../../enums/user';
+import auth from '../../middlewares/auth';
 import validateRequest from '../../middlewares/validateRequest';
 import { BookController } from './book.controller';
 import { BookValidation } from './book.validations';
@@ -14,21 +16,21 @@ router.get('/:id', BookController.getByIdFromDB);
 
 router.post(
   '/create-book',
-  // auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.create),
   BookController.insertIntoDB
 );
 
 router.patch(
   '/:id',
-  // auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN),
   validateRequest(BookValidation.update),
   BookController.updateIntoDb
 );
 
 router.delete(
   '/:id',
-  // auth(ENUM_USER_ROLE.ADMIN),
+  auth(ENUM_USER_ROLE.ADMIN),
   BookController.deleteFromDB
 );
 
