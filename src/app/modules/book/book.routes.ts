@@ -13,6 +13,7 @@ router.get(
 );
 
 router.get('/:id', BookController.getByIdFromDB);
+router.get('/:id/category', BookController.getBookFromCategoryId);
 
 router.post(
   '/create-book',

@@ -23,7 +23,7 @@
 ## Books
 - api/v1/books/create-book (POST)
 - api/v1/books (GET)
-- api/v1/books/:categoryId/category (GET)
+- api/v1/books/36ea4ed2-e73b-44fe-9d1f-95b9f21e3303/category (GET)
 - api/v1/books/cd01c50a-d112-4b3e-8eab-8dad4f646988 (GET)
 - api/v1/books/cd01c50a-d112-4b3e-8eab-8dad4f646988 (PATCH)
 - api/v1/books/cd01c50a-d112-4b3e-8eab-8dad4f646988 (DELETE)
