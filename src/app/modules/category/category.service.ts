@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Category, Prisma } from '@prisma/client';
 import { paginationHelpers } from '../../../helpers/paginationHelper';
 import { IGenericResponse } from '../../../interfaces/common';
@@ -9,7 +10,7 @@ import {
     studentRelationalFieldsMapper,
     studentSearchableFields,
 } from './category.constants';
-import { IStudentFilterRequest } from './category.interface';
+// import { IStudentFilterRequest } from './category.interface';
 
 const insertIntoDB = async (data: Category): Promise<Category> => {
   const result = await prisma.category.create({
@@ -19,7 +20,7 @@ const insertIntoDB = async (data: Category): Promise<Category> => {
 };
 
 const getAllFromDB = async (
-  filters: IStudentFilterRequest,
+  filters: any,
   options: IPaginationOptions
 ): Promise<IGenericResponse<Category[]>> => {
   const { size, page, skip } = paginationHelpers.calculatePagination(options);

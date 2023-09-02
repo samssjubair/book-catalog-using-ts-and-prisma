@@ -4,12 +4,25 @@ import { IGenericResponse } from '../../../interfaces/common';
 import prisma from '../../../shared/prisma';
 
 
-const insertIntoDB = async (data: Order): Promise<Order> => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const insertIntoDB = async (data: any): Promise<Order> => {
   const result = await prisma.order.create({
     data
   });
   return result;
 };
+
+// const insertIntoDB = async (data: Order): Promise<Order> => {
+//   const result = await prisma.order.create({
+//     data: {
+//       ...data,
+//       orderedBooks: {
+//         data.ordererBooks
+//       },
+//     },
+//   });
+//   return result;
+// };
 
 const getAllFromDB = async (
   role: string | null,

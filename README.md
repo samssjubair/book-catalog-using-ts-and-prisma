@@ -1,7 +1,7 @@
 # Book Catalog
 ## Using Typescript, Express, Zod, Prisma and Postgres
 
-## Live URL: 
+## Live URL: https://book-catalog-max-samssjubair.vercel.app/
 
 ## Application Routes:
 ### User
