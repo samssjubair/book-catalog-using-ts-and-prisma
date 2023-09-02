@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import httpStatus from 'http-status';
 import catchAsync from '../../../shared/catchAsync';
-import pick from '../../../shared/pick';
 import sendResponse from '../../../shared/sendResponse';
-import { studentFilterableFields } from './order.constants';
 import { OrderService } from './order.service';
 
 const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
@@ -17,9 +15,12 @@ const insertIntoDB = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
-  const filters = pick(req.query, studentFilterableFields);
-  const options = pick(req.query, ['size', 'page', 'sortBy', 'sortOrder']);
-  const result = await OrderService.getAllFromDB(filters, options);
+
+  // const filters = pick(req.query, studentFilterableFields);
+  // const options = pick(req.query, ['size', 'page', 'sortBy', 'sortOrder']);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const {role, id}= req.user as any;
+  const result = await OrderService.getAllFromDB(role,id);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

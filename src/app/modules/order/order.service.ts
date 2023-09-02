@@ -1,15 +1,8 @@
-import { Book, Order, Prisma } from '@prisma/client';
-import { paginationHelpers } from '../../../helpers/paginationHelper';
+import { Book, Order } from '@prisma/client';
 import { IGenericResponse } from '../../../interfaces/common';
-import { IPaginationOptions } from '../../../interfaces/pagination';
 
 import prisma from '../../../shared/prisma';
-import {
-  studentRelationalFields,
-  studentRelationalFieldsMapper,
-  studentSearchableFields,
-} from './order.constants';
-import { IStudentFilterRequest } from './order.interface';
+
 
 const insertIntoDB = async (data: Order): Promise<Order> => {
   const result = await prisma.order.create({
@@ -19,72 +12,28 @@ const insertIntoDB = async (data: Order): Promise<Order> => {
 };
 
 const getAllFromDB = async (
-  filters: IStudentFilterRequest,
-  options: IPaginationOptions
+  role: string | null,
+  userId: string | null
 ): Promise<IGenericResponse<Order[]>> => {
-  const { size, page, skip } = paginationHelpers.calculatePagination(options);
-  const { searchTerm, ...filterData } = filters;
+  let result: Order[] = [];
 
-  const andConditions = [];
-
-  if (searchTerm) {
-    andConditions.push({
-      OR: studentSearchableFields.map(field => ({
-        [field]: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      })),
+  if (role === 'admin') {
+    // If the role is 'admin', fetch all orders
+    result = await prisma.order.findMany();
+  } else if (role === 'customer' && userId) {
+    // If the role is 'customer' and userId is provided, fetch orders for that user
+    result = await prisma.order.findMany({
+      where: {
+        userId: userId,
+      },
     });
   }
-
-  if (Object.keys(filterData).length > 0) {
-    andConditions.push({
-      AND: Object.keys(filterData).map(key => {
-        if (studentRelationalFields.includes(key)) {
-          return {
-            [studentRelationalFieldsMapper[key]]: {
-              id: (filterData as any)[key],
-            },
-          };
-        } else {
-          return {
-            [key]: {
-              equals: (filterData as any)[key],
-            },
-          };
-        }
-      }),
-    });
-  }
-
-  const whereConditions: Prisma.UserWhereInput =
-    andConditions.length > 0 ? { AND: andConditions } : {};
-
-  const result = await prisma.order.findMany({
-    where: whereConditions,
-    skip,
-    take: size,
-    orderBy:
-      options.sortBy && options.sortOrder
-        ? { [options.sortBy]: options.sortOrder }
-        : {
-            createdAt: 'desc',
-          },
-  });
-  const total = await prisma.order.count({
-    where: whereConditions,
-  });
 
   return {
-    meta: {
-      total,
-      page,
-      size,
-    },
     data: result,
   };
 };
+
 
 const getByIdFromDB = async (id: string): Promise<Book | null> => {
   const result = await prisma.book.findUnique({
