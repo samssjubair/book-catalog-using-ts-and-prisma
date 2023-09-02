@@ -39,6 +39,16 @@
             "date": 1693580448650,
             "name": "/Users/samssjubair/Documents/PH level-2/assignment-8/university-management-core-service-starter/logs/winston/successes/phu-2023-01-09-21-success.log",
             "hash": "6f2513c382f65a8908e6755f01538539d3a1b189766515bc6dc1a2a3ce67ccb1"
+        },
+        {
+            "date": 1693668074864,
+            "name": "/Users/samssjubair/Documents/PH level-2/assignment-8/university-management-core-service-starter/logs/winston/successes/phu-2023-02-09-21-success.log",
+            "hash": "807aecf87ec7a9a0cc195c7e2994b37e5b4fb59a5a86ca52fdfe26a2e3be88b2"
+        },
+        {
+            "date": 1693670413593,
+            "name": "/Users/samssjubair/Documents/PH level-2/assignment-8/university-management-core-service-starter/logs/winston/successes/phu-2023-02-09-22-success.log",
+            "hash": "d1d4f05114398162585e7e3f8506d8b5cc312351bd3978b1ab2e2265b0a1fe1a"
         }
     ],
     "hashType": "sha256"
